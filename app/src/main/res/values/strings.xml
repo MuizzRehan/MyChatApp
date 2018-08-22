@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MyChatApp</string>
     <string name="create_a_new_account">Create a new account</string>
+    <string name="create_account">Create Account</string>
+    <string name="password">Password</string>
+    <string name="emial">Emial</string>
+    <string name="name">Name</string>
 </resources>
