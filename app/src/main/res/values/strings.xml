@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyChatApp</string>
+    <string name="create_a_new_account">Create a new account</string>
 </resources>
