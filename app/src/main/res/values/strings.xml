@@ -8,4 +8,6 @@
     <string name="account_setting">Account Setting</string>
     <string name="all_users">All Users</string>
     <string name="logout">Logout</string>
+    <string name="login_to_your_account">Login to Your Account</string>
+    <string name="login">Login</string>
 </resources>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="@color/colorPrimary"
     tools:context=".StartActivity">
 
     <TextView
@@ -20,6 +21,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="171dp"
+        android:layout_marginBottom="101dp"
+        android:background="@color/colorAccent"
         android:text="@string/create_a_new_account" />
+
+    <Button
+        android:id="@+id/start_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="156dp"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:text="Already Have Account"
+        android:textColor="@color/colorPrimaryDark" />
 </RelativeLayout>
