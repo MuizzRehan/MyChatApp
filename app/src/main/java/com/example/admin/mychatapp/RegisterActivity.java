@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout _email;
     private TextInputLayout _password;
     private Button _createBtn;
+    private Toolbar reg_toolbar;
     private FirebaseAuth mAuth;
 
     @Override
@@ -35,6 +37,12 @@ public class RegisterActivity extends AppCompatActivity {
         _email = findViewById(R.id.reg_email);
         _password = findViewById(R.id.reg_password);
         _createBtn = findViewById(R.id.reg_create_account);
+        reg_toolbar = findViewById(R.id.reg_toolBar);
+
+        //setting Toolbar
+        setSupportActionBar(reg_toolbar);
+        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //onClick Listner on CreateAccount Button
         _createBtn.setOnClickListener(createAccount);
