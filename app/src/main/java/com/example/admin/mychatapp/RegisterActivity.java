@@ -27,13 +27,16 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //Initializing FireBase instance
         mAuth = FirebaseAuth.getInstance();
 
+        //Initializing XML variables
         _name = findViewById(R.id.reg_name);
         _email = findViewById(R.id.reg_email);
         _password = findViewById(R.id.reg_password);
         _createBtn = findViewById(R.id.reg_create_account);
 
+        //onClick Listner on CreateAccount Button
         _createBtn.setOnClickListener(createAccount);
     }
 
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
+    //For registering a new user
     private void registerUser(String name, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
