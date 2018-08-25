@@ -10,4 +10,11 @@
     <string name="logout">Logout</string>
     <string name="login_to_your_account">Login to Your Account</string>
     <string name="login">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_status">Hi there, I am using MyChat App!</string>
+    <string name="default_name">Display_Name</string>
+    <string name="change_status">Change Status</string>
+    <string name="change_image">Change Image</string>
 </resources>
