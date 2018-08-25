@@ -17,4 +17,6 @@
     <string name="default_name">Display_Name</string>
     <string name="change_status">Change Status</string>
     <string name="change_image">Change Image</string>
+    <string name="display_name">Display Name</string>
+    <string name="default_user_status">Default User Status</string>
 </resources>
