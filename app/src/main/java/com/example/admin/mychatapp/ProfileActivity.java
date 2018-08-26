@@ -3,12 +3,18 @@ package com.example.admin.mychatapp;
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,8 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
     private Button sendRequest_btn;
     private Button declineRequest_btn;
     private DatabaseReference profile_databaseReference;
+    private DatabaseReference friendRequest_databaseReference;
     private FirebaseUser profile_firebaseUser;
     private ProgressDialog progressDialog;
+    boolean IS_FRIEND;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +43,14 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         //getting User_id from AllUser Activity
-        String uid = getIntent().getStringExtra("uid");
+        final String uid = getIntent().getStringExtra("uid");
 
+        //initializing FirebaseAuth object
+        friendRequest_databaseReference = FirebaseDatabase.getInstance().getReference().child("Friend_Requests");
         //initializing Database Reference
         profile_databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+        //initializing FirebaseUser
+        profile_firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //initializing XML Variables
         profile_userName = findViewById(R.id.profile_userName);
@@ -47,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_userImage = findViewById(R.id.profile_userImage);
         sendRequest_btn = findViewById(R.id.profile_sendFriendRequest_btn);
         declineRequest_btn = findViewById(R.id.profile_declineFriendRequest_btn);
+        IS_FRIEND = false;
 
         //initializing and setting ProcessDialog
         progressDialog = new ProgressDialog(this);
@@ -73,6 +86,33 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        //On sendRequest Button Click
+        sendRequest_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!IS_FRIEND){
+                    friendRequest_databaseReference.child(profile_firebaseUser.getUid()).child(uid)
+                            .child("request_type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                            friendRequest_databaseReference.child(uid).child(profile_firebaseUser.getUid())
+                                    .child("request_type").setValue("receive")
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(ProfileActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else {
+                                Toast.makeText(ProfileActivity.this, "Send Request Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
