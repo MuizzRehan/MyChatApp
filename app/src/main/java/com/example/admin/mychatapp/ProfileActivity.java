@@ -1,0 +1,19 @@
+package com.example.admin.mychatapp;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class ProfileActivity extends AppCompatActivity {
+    TextView profile_uid;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        profile_uid = findViewById(R.id.profile_uid);
+        String uid = getIntent().getStringExtra("uid");
+        profile_uid.setText(uid);
+    }
+}
