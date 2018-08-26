@@ -32,6 +32,5 @@ public class UsersRecycleViewHolder extends RecyclerView.ViewHolder {
     public void setImage(String thumbImage) {
         CircleImageView userImage = userView.findViewById(R.id.user_image);
         Picasso.get().load(thumbImage).placeholder(R.drawable.avatar_image).into(userImage);
-        int a=0;
     }
 }

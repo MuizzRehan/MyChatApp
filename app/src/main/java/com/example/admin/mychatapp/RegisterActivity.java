@@ -3,9 +3,11 @@ package com.example.admin.mychatapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout _password;
     private Button _createBtn;
     private Toolbar reg_toolbar;
-    private ProgressDialog progressBar;
+    private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
 
@@ -36,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
 
         //Initializing FireBase instance
         mAuth = FirebaseAuth.getInstance();
@@ -46,7 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
         _password = findViewById(R.id.reg_password);
         _createBtn = findViewById(R.id.reg_create_account);
         reg_toolbar = findViewById(R.id.reg_toolBar);
-        progressBar = new ProgressDialog(this);
+
+        //initializing ProgressDialog
+        progressDialog = new ProgressDialog(this);
 
         //setting Toolbar
         setSupportActionBar(reg_toolbar);
@@ -67,10 +72,10 @@ public class RegisterActivity extends AppCompatActivity {
             if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
                 //setting ProgressBar
-                progressBar.setTitle("Registering User");
-                progressBar.setMessage("Please wait we are creating your account");
-                progressBar.setCanceledOnTouchOutside(false);
-                progressBar.show();
+                progressDialog.setTitle("Registering User");
+                progressDialog.setMessage("Please wait we are creating your account");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
 
                 registerUser(name, email, password);
             }
@@ -78,12 +83,11 @@ public class RegisterActivity extends AppCompatActivity {
     };
 
     //For registering a new user
-    private void registerUser(final String name, String email, String password) {
+    private void registerUser(final String name, final String email, final String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    progressBar.dismiss();
 
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     String uid = currentUser.getUid();
@@ -102,12 +106,41 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(mainIntent);
                     finish();
                     */
+                    progressDialog.dismiss();
+
+                    setContentView(R.layout.activity_blank);
+
+                    progressDialog = new ProgressDialog(RegisterActivity.this);
+                    progressDialog.setTitle("Logging User");
+                    progressDialog.setMessage("Please wait we are checking credentials...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    loginUser(email, password);
 
                 } else{
-                    progressBar.hide();
+                    progressDialog.hide();
                     Toast.makeText(RegisterActivity.this, "Cannot SignIn. Please try again.", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+
+    private void loginUser(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    progressDialog.dismiss();
+                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(mainIntent);
+                } else {
+                    progressDialog.hide();
+                    Toast.makeText(RegisterActivity.this,
+                            "can't SignIn. Please try again.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+}
 }
